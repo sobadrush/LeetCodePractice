@@ -28,10 +28,15 @@ package org.leetcode.easy;
     text consists of lower case English letters only.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class Leetcode_1189 {
 
     /**
      * Ref. https://leetcode.jp/leetcode-1189-maximum-number-of-balloons-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/
+     *
      * @param text
      * @return
      */
@@ -55,6 +60,41 @@ public class Leetcode_1189 {
         return res;
     }
 
+    private static int maxNumberOfBalloons2(String text) {
+        HashMap<Character, Integer> hmap = new HashMap<>();
+        char[] chArr = text.toCharArray();
+        for (int i = 0; i < chArr.length; i++) {
+            char ch = chArr[i];
+            Integer num = hmap.getOrDefault(ch, 1);
+            if (hmap.get(ch) == null) {
+                hmap.put(ch, num);
+            } else {
+                hmap.put(ch, num + 1);
+            }
+        }
+
+        int minVal = Integer.MAX_VALUE;
+        Set<Map.Entry<Character, Integer>> eset = hmap.entrySet();
+        for (Map.Entry<Character, Integer> entry : eset) {
+            Character ch = entry.getKey();
+            Integer appearTimes = entry.getValue();
+            switch (ch) {
+                case 'b':
+                case 'n':
+                case 'a':
+                    minVal = Math.min(minVal, appearTimes);
+                    break;
+                case 'l':
+                case 'o':
+                    minVal = Math.min(minVal, appearTimes / 2);
+                    break;
+            }
+
+        }
+
+        return minVal;
+    }
+
     public static void main(String[] args) {
         // HashMap<Character, Integer> mapA = parseCharList("balloon");
         // HashMap<Character, Integer> mapB = (HashMap<Character, Integer>) mapA.clone();
@@ -66,6 +106,6 @@ public class Leetcode_1189 {
         // String text = "loonbalxballpoon";
         // String text = "leetcode";
         String text = "krhizmmgmcrecekgyljqkldocicziihtgpqwbticmvuyznragqoyrukzopfmjhjjxemsxmrsxuqmnkrzhgvtgdgtykhcglurvppvcwhrhrjoislonvvglhdciilduvuiebmffaagxerjeewmtcwmhmtwlxtvlbocczlrppmpjbpnifqtlninyzjtmazxdbzwxthpvrfulvrspycqcghuopjirzoeuqhetnbrcdakilzmklxwudxxhwilasbjjhhfgghogqoofsufysmcqeilaivtmfziumjloewbkjvaahsaaggteppqyuoylgpbdwqubaalfwcqrjeycjbbpifjbpigjdnnswocusuprydgrtxuaojeriigwumlovafxnpibjopjfqzrwemoinmptxddgcszmfprdrichjeqcvikynzigleaajcysusqasqadjemgnyvmzmbcfrttrzonwafrnedglhpudovigwvpimttiketopkvqw";
-        System.out.println("ans = " + maxNumberOfBalloons(text));
+        System.out.println("ans = " + maxNumberOfBalloons2(text));
     }
 }
